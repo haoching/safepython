@@ -41,6 +41,8 @@ Data members:
 #include "osdefs.h"               // DELIM
 #include "stdlib_module_names.h"  // _Py_stdlib_module_names
 
+#include <string.h>
+
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>             // getpid()
 #endif
@@ -316,6 +318,16 @@ exit:
     return res;
 }
 
+bool is_unsafe(const char *event)
+{
+    if (
+        !strcmp(event,"compile") ||
+        !strcmp(event,"exec")
+    ) return false;
+    else
+        return true;
+}
+
 int
 _PySys_Audit(PyThreadState *tstate, const char *event,
              const char *argFormat, ...)
@@ -325,8 +337,8 @@ _PySys_Audit(PyThreadState *tstate, const char *event,
     int res = sys_audit_tstate(tstate, event, argFormat, vargs);
     va_end(vargs);
 
-    if (PyRASP_GetEvalCounter() > 0) {
-        printf("RASP Detected!!\n");
+    if (PyRASP_GetEvalCounter() > 0 && is_unsafe(event)) {
+        printf("RASP Detected: %s \n", event);
         res = -1;
     }
 
@@ -342,8 +354,8 @@ PySys_Audit(const char *event, const char *argFormat, ...)
     int res = sys_audit_tstate(tstate, event, argFormat, vargs);
     va_end(vargs);
 
-    if (PyRASP_GetEvalCounter() > 0) {
-        printf("RASP Detected!!\n");
+    if (PyRASP_GetEvalCounter() > 0 && is_unsafe(event)) {
+        printf("RASP Detected %s \n", event);
         res = -1;
     }
 
