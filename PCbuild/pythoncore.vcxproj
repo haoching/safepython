@@ -354,6 +354,7 @@
     <ClInclude Include="..\Include\pythonrun.h" />
     <ClInclude Include="..\Include\pythread.h" />
     <ClInclude Include="..\Include\pytypedefs.h" />
+    <ClInclude Include="..\Include\rasp.h" />
     <ClInclude Include="..\Include\rangeobject.h" />
     <ClInclude Include="..\Include\refcount.h" />
     <ClInclude Include="..\Include\setobject.h" />
@@ -461,6 +462,7 @@
     <ClCompile Include="..\Modules\_opcode.c" />
     <ClCompile Include="..\Modules\_operator.c" />
     <ClCompile Include="..\Modules\posixmodule.c" />
+    <ClCompile Include="..\Modules\rasp.c" />
     <ClCompile Include="..\Modules\rotatingtree.c" />
     <ClCompile Include="..\Modules\sha1module.c" />
     <ClCompile Include="..\Modules\sha2module.c" />
