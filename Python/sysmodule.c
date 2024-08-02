@@ -339,6 +339,8 @@ _PySys_Audit(PyThreadState *tstate, const char *event,
 
     if (PyRASP_GetEvalCounter() > 0 && is_unsafe(event)) {
         printf("RASP Detected: %s \n", event);
+        _PyErr_SetRaisedException(tstate, PyExc_RuntimeError);
+        _PyErr_SetString(tstate, PyExc_RuntimeError,"Invalid operation");
         res = -1;
     }
 
@@ -356,6 +358,8 @@ PySys_Audit(const char *event, const char *argFormat, ...)
 
     if (PyRASP_GetEvalCounter() > 0 && is_unsafe(event)) {
         printf("RASP Detected %s \n", event);
+        _PyErr_SetRaisedException(tstate, PyExc_RuntimeError);
+        _PyErr_SetString(tstate, PyExc_RuntimeError,"Invalid operation");
         res = -1;
     }
 
