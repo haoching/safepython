@@ -20,8 +20,6 @@
 #include "pycore_setobject.h"         // _PySet_NextEntry()
 #include "pycore_sysmodule.h"         // _PySys_GetAttr()
 
-#include "rasp.h"
-
 #include <stdlib.h>               // strtol()
 
 
@@ -6996,11 +6994,6 @@ _pickle_Unpickler_find_class_impl(UnpicklerObject *self, PyTypeObject *cls,
 {
     PyObject *global;
     PyObject *module;
-
-    if (PyRASP_GetEvalCounter() > 0) {
-        printf("RASP Detected!!\n");
-        return NULL;
-    }
 
     if (PySys_Audit("pickle.find_class", "OO",
                     module_name, global_name) < 0) {

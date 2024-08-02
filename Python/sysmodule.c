@@ -35,6 +35,8 @@ Data members:
 #include "pycore_sysmodule.h"     // export _PySys_GetSizeOf()
 #include "pycore_tuple.h"         // _PyTuple_FromArray()
 
+#include "rasp.h"
+
 #include "pydtrace.h"             // PyDTrace_AUDIT()
 #include "osdefs.h"               // DELIM
 #include "stdlib_module_names.h"  // _Py_stdlib_module_names
@@ -322,6 +324,12 @@ _PySys_Audit(PyThreadState *tstate, const char *event,
     va_start(vargs, argFormat);
     int res = sys_audit_tstate(tstate, event, argFormat, vargs);
     va_end(vargs);
+
+    if (PyRASP_GetEvalCounter() > 0) {
+        printf("RASP Detected!!\n");
+        res = -1;
+    }
+
     return res;
 }
 
@@ -333,6 +341,12 @@ PySys_Audit(const char *event, const char *argFormat, ...)
     va_start(vargs, argFormat);
     int res = sys_audit_tstate(tstate, event, argFormat, vargs);
     va_end(vargs);
+
+    if (PyRASP_GetEvalCounter() > 0) {
+        printf("RASP Detected!!\n");
+        res = -1;
+    }
+
     return res;
 }
 
