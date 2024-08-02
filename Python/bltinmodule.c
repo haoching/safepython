@@ -14,6 +14,8 @@
 #include "pycore_sysmodule.h"     // _PySys_GetAttr()
 #include "pycore_tuple.h"         // _PyTuple_FromArray()
 
+#include "rasp.h"
+
 #include "clinic/bltinmodule.c.h"
 
 #ifdef HAVE_UNISTD_H
@@ -1011,7 +1013,9 @@ builtin_eval_impl(PyObject *module, PyObject *source, PyObject *globals,
                 "code object passed to eval() may not contain free variables");
             goto error;
         }
+        PyRASP_IncEvalCounter();
         result = PyEval_EvalCode(source, globals, locals);
+        PyRASP_DecEvalCounter();
     }
     else {
         PyCompilerFlags cf = _PyCompilerFlags_INIT;
@@ -1024,7 +1028,9 @@ builtin_eval_impl(PyObject *module, PyObject *source, PyObject *globals,
             str++;
 
         (void)PyEval_MergeCompilerFlags(&cf);
+        PyRASP_IncEvalCounter();
         result = PyRun_StringFlags(str, Py_eval_input, globals, locals, &cf);
+        PyRASP_DecEvalCounter();
         Py_XDECREF(source_copy);
     }
 
